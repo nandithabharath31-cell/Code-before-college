@@ -1,0 +1,3 @@
+ NAME OF THE STUDENT : nanditha 
+ COURSE : cse 
+ CGPA : 9.800000 
