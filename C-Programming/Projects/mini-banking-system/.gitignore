@@ -1,0 +1,9 @@
+# Compiled program
+*.exe
+*.out
+
+# Temporary files
+*.tmp
+
+# VS Code settings
+.vscode/
