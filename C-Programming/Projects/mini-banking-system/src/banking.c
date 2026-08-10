@@ -13,6 +13,7 @@ typedef struct customer_details
 int main()
 {
     int totalcustomers = 0;
+    int current_user = -1;  //shows no user logged in currently
     user accounts[MAX_CUSTOMERS];
     //-------------------------MENU--------------------------------------
     while (1)
@@ -79,6 +80,47 @@ int main()
 
             totalcustomers++;
         }
+
+        //-------------------------LOGIN----------------------------------------
+        else if (ch == 2)
+        {
+            printf("\n-------------------------------------------\n");
+            printf("                LOGIN");
+            printf("\n-------------------------------------------\n");
+
+            int accnum;
+            int pin;
+            printf("Enter Account Number : ");
+            scanf("%d", &accnum);
+            int found = 0;
+            for (int i = 0; i < totalcustomers; i++)
+            {
+                if (accnum == accounts[i].accountnumber)
+                {
+                    current_user = i;
+                    printf("Enter PIN : ");
+                    scanf("%d", &pin);
+                    if (pin == accounts[current_user].pin)
+                    {
+                        printf("LOGIN SUCCESSFUL ! \n");
+                        printf("WELCOME %s", accounts[current_user].name);
+                        found = 1;
+                        break;
+                    }
+                    else
+                    {
+                        printf("INCORRECT PIN");
+                        found = 1;
+                        break;
+                    }
+                }
+            }
+            if (found == 0)
+            {
+                printf("ACCOUNT NOT FOUND");
+            }
+        }
+
         //-------------------------ACCOUNT LOOKUP--------------------------------
         else if (ch == 3)
         {
