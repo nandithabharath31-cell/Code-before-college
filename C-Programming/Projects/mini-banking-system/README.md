@@ -54,7 +54,7 @@ mini-banking-system/
                                       │
                                       ↓
                               Logged-in Menu
-                                      │
+                                      │             
             ┌─────────────┬───────────┼─────────────┐
             ↓             ↓           ↓             ↓
         Balance        Deposit     Withdraw      Transfer
@@ -68,11 +68,12 @@ mini-banking-system/
 
 **In Development**
 
-* [ ] Account creation
-* [ ] Login system
-* [ ] Balance management
-* [ ] Deposit & withdrawal
-* [ ] Money transfer
+* [✅] Account creation
+* [✅] Login system
+* [✅ ] Balance management
+* [✅ ] Deposit & withdrawal
+* [✅ ] Money transfer
+* [✅ ] changing password
 * [ ] Transaction history
 * [ ] File storage
 * [ ] Input validation
@@ -84,6 +85,6 @@ To strengthen C programming and problem-solving skills by designing and building
 
 ## 👩‍💻 Author
 
-**Nanditha **
+**Nanditha**
 
 Built as part of my C programming learning journey.
