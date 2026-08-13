@@ -29,9 +29,13 @@ void checkBalance(int index);
 void transfer(int index);
 void changePassword(int index);
 
+void saveData();
+void loadData();
+
 int main()
 {
     int choice;
+    loadData();
 
     while (1)
     {
@@ -54,12 +58,52 @@ int main()
             searchAccount();
             break;
         case 4:
+            saveData();
             printf("\nThank you for using Mini Banking System! \n");
             return 0;
         default:
             printf("INVALID CHOICE .... try again !");
         }
     }
+}
+
+void saveData()
+{
+    FILE *fptr;
+    fptr = fopen("../data/accounts.dat", "wb");
+    if (fptr == NULL)
+    {
+        printf("Error opening file.\n");
+        return;
+    }
+    fwrite(&totalcustomers, sizeof(int), 1, fptr);
+    fwrite(accounts, sizeof(user), totalcustomers, fptr);
+    fclose(fptr);
+}
+
+void loadData()
+{
+    FILE *fptr;
+
+    fptr = fopen("../data/accounts.dat", "rb");
+
+    if (fptr == NULL)
+    {
+        return;
+    }
+
+    fread(&totalcustomers, sizeof(int), 1, fptr);
+    if (totalcustomers < 0 || totalcustomers > MAX_CUSTOMERS)
+    {
+        printf("Invalid data file.\n");
+        totalcustomers = 0;
+        fclose(fptr);
+        return;
+    }
+
+    fread(accounts, sizeof(user), totalcustomers, fptr);
+
+    fclose(fptr);
 }
 
 int displayMenu()
@@ -73,9 +117,17 @@ int displayMenu()
     printf("      3. Search Account \n");
     printf("      4. Exit \n");
 
-    printf("Enter choice : ");
+    // printf("Enter choice : ");
     int choice;
-    scanf("%d", &choice);
+    // scanf("%d", &choice);
+    printf("Enter choice : ");
+
+    if (scanf("%d", &choice) != 1)
+    {
+        while (getchar() != '\n')
+            ;
+        return -1;
+    }
 
     return choice;
 }
@@ -114,11 +166,30 @@ void createAccount()
     printf("Enter user Name : ");
     getchar(); // take \n character
     fgets(accounts[totalcustomers].name, 50, stdin);
-    accounts[totalcustomers].name[strcspn(accounts[totalcustomers].name, "\n")] = '\0'; //to avoid \n
-    printf("Create PIN : ");
-    scanf("%d", &accounts[totalcustomers].pin);
-    printf("Enter initial balance : ");
-    scanf("%f", &accounts[totalcustomers].balance);
+    accounts[totalcustomers].name[strcspn(accounts[totalcustomers].name, "\n")] = '\0'; // to avoid \n
+
+    do
+    {
+        printf("Create PIN : ");
+        scanf("%d", &accounts[totalcustomers].pin);
+        if (accounts[totalcustomers].pin < 1000 ||
+            accounts[totalcustomers].pin > 9999)
+        {
+            printf("PIN must contain exactly 4 digits.\n");
+        }
+    } while (accounts[totalcustomers].pin < 1000 ||
+             accounts[totalcustomers].pin > 9999);
+
+    do
+    {
+        printf("Enter initial balance : ");
+        scanf("%f", &accounts[totalcustomers].balance);
+        if (accounts[totalcustomers].balance < 0)
+        {
+            printf("Balance cannot be negative.\n");
+        }
+
+    } while (accounts[totalcustomers].balance < 0);
 
     printf("\n~~~~~~~~~~~~~~~~~~~~~~~\n");
     printf("    ACCOUNT CREATED \n");
@@ -130,6 +201,7 @@ void createAccount()
     printf("Please remember your account number and PIN.\n");
 
     totalcustomers++;
+    saveData();
 }
 
 int login()
@@ -193,7 +265,7 @@ void bankingMenu(int index)
 {
     while (1)
     {
-        printf("================================\n");
+        printf("\n================================\n");
         printf("      BANKING DASHBOARD   \n");
         printf("  Logged in as : %s \n", accounts[index].name);
         printf("================================\n");
@@ -208,7 +280,13 @@ void bankingMenu(int index)
         printf("\n");
         int choice;
         printf("Enter Choice :");
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1)
+        {
+            while (getchar() != '\n')
+                ;
+            printf("Invalid input. Please enter a number.\n");
+            continue;
+        }
 
         switch (choice)
         {
@@ -249,6 +327,7 @@ void deposit(int index)
     if (depositamt > 0)
     {
         accounts[index].balance += depositamt;
+        saveData();
         printf("Deposit Successful ! \n");
         printf("\n");
         printf("Amount Deposited : %.2f\n", depositamt);
@@ -272,6 +351,7 @@ void withdraw(int index)
     if (withdrawamt > 0 && withdrawamt <= accounts[index].balance)
     {
         accounts[index].balance -= withdrawamt;
+        saveData();
         printf("Withdrawal Successful ! \n");
         printf("\n");
         printf("Remaining Balance : %.2f\n", accounts[index].balance);
@@ -302,7 +382,6 @@ void transfer(int index)
     printf("                TRANSFER");
     printf("\n-------------------------------------------\n");
     int receiver_account;
-    int found = 0;
     float amount;
     printf("Enter Receiver Account Number : ");
     scanf("%d", &receiver_account);
@@ -321,10 +400,11 @@ void transfer(int index)
             {
                 accounts[index].balance -= amount;
                 accounts[i].balance += amount;
+                saveData();
 
                 printf("Transfer Successful !\n");
                 printf("Receiver Account : %d \n", receiver_account);
-                preintf("Receiver Name : %s\n", accounts[i].name);
+                printf("Receiver Name : %s\n", accounts[i].name);
                 printf("Transferred : %.2f \n", amount);
                 printf("Available Balance : %.2f\n", accounts[index].balance);
                 return;
@@ -360,6 +440,7 @@ void changePassword(int index)
         if (confpin == NewPIN)
         {
             accounts[index].pin = NewPIN;
+            saveData();
             printf("\n Password Updated Successfully! \n");
             return;
         }

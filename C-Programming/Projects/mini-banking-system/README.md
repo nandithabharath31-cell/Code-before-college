@@ -4,14 +4,14 @@ A command-line banking application built using **C** to practice core programmin
 
 ## ✨ Features
 
-* Create and manage bank accounts
-* Secure login using account number and PIN
+* Create and search bank accounts
+* Login using account number and PIN
 * Check account balance
 * Deposit and withdraw money
 * Transfer money between accounts
 * View transaction history
 * Store account data using file handling
-* Input validation and error handling
+* Basic input validation and error handling
 
 ## 🧠 Concepts Used
 
@@ -24,6 +24,10 @@ A command-line banking application built using **C** to practice core programmin
 * Searching
 * File Handling
 * Input Validation
+* Binary files
+* fwrite()
+* fread()
+* Modular programming
 
 ## 📁 Project Structure
 
@@ -66,18 +70,36 @@ mini-banking-system/
                                            Save to file
 ## 🚧 Status
 
-**In Development**
+**Completed ✅**
 
 * [✅] Account creation
+* [✅] Duplicate account detection
 * [✅] Login system
-* [✅ ] Balance management
-* [✅ ] Deposit & withdrawal
-* [✅ ] Money transfer
-* [✅ ] changing password
-* [ ] Transaction history
-* [ ] File storage
-* [ ] Input validation
-* [ ] Testing & improvements
+* [✅] Balance management
+* [✅] Deposit & withdrawal
+* [✅] Account-to-account transfer
+* [✅] changing password
+* [✅] File storage(binary file)
+* [✅] Basic Input validation
+* [✅] Testing & improvements
+ 
+## Limitations
+
+- The program currently expects numeric input for account numbers, PINs,
+  menu choices, and transaction amounts.
+- Non-numeric input for these fields may cause unexpected behavior.
+- This project is intended as a C programming learning project and is not
+  designed for real-world banking use.
+
+## Future Improvements
+
+- Add robust input validation for all user inputs.
+- Add transaction history and transaction records.
+- Add account deletion and account update features.
+- Add interest calculation and other banking services.
+- Improve security by securely handling PINs instead of storing them directly.
+- Add a graphical user interface.
+- Improve file/database management using a proper database system.
 
 ## 🎯 Goal
 
